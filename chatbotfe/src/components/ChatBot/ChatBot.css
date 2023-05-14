@@ -1,0 +1,123 @@
+.chat-container {
+    width: 100vw;
+    height: 100vh;
+    padding: 1em;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #1a1a2e;
+    color: #f1f1f1;
+  }
+  
+  .chat-title {
+    text-align: center;
+    font-size: 2vw;
+    color: #e0e0e0;
+  }
+  
+  .chat-subtitle {
+    text-align: center;
+    font-size: 1vw;
+    color: #a8a8a8;
+  }
+  
+  .chat-messages {
+    overflow-y: auto;
+    flex-grow: 1;
+    margin: 1em 0;
+  }
+  
+  .chat-message {
+    margin: 1em 0;
+    padding: 1em;
+    border-radius: 8px;
+    font-size: 0.9vw;
+  }
+  
+  .chat-message.user {
+    background-color: #007BFF;
+    text-align: right;
+    margin-left: 25%;
+  }
+  
+  .chat-message.bot {
+    background-color: #0f3460;
+    text-align: left;
+    margin-right: 25%;
+  }
+  
+  .chat-form {
+    display: flex;
+  }
+  
+  .chat-input {
+    flex-grow: 1;
+    padding: 1em;
+    border-radius: 8px;
+    border: none;
+    font-size: 0.9vw;
+  }
+  
+  .clear-button {
+    padding: 1em;
+    border: none;
+    border-radius: 8px;
+    margin-left: 1em;
+    background-color: #4176ae66;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 0.9vw;
+  }
+  
+  .clear-buttonbutton:hover {
+    background-color: #373d43;
+  }
+
+  
+  .chat-button {
+    padding: 1em;
+    border: none;
+    border-radius: 8px;
+    margin-left: 1em;
+    background-color: #007BFF;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 0.9vw;
+  }
+  
+  .chat-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .error-message {
+    color: red;
+    text-align: center;
+    font-size: 1.2vw;
+  }
+  
+  @media screen and (max-width: 600px) {
+    .chat-title {
+      font-size: 5vw;
+    }
+  
+    .chat-subtitle {
+      font-size: 4vw;
+    }
+  
+    .chat-message {
+      font-size: 4vw;
+    }
+  
+    .chat-input,
+    .chat-button {
+      font-size: 4vw;
+    }
+  
+    .error-message {
+      font-size: 4vw;
+    }
+  }
+    
