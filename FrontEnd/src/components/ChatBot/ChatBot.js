@@ -13,16 +13,16 @@ function ChatBot() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  useEffect(() => {
-    const storedMessages = localStorage.getItem("chatMessages");
-    const storedContext = localStorage.getItem("chatContext");
-    if (storedMessages) {
-      setMessages(JSON.parse(storedMessages));
-    }
-    if (storedContext) {
-      setContext(JSON.parse(storedContext));
-    }
-  }, []);
+  // useEffect(() => {
+  //   const storedMessages = localStorage.getItem("chatMessages");
+  //   const storedContext = localStorage.getItem("chatContext");
+  //   if (storedMessages) {
+  //     setMessages(JSON.parse(storedMessages));
+  //   }
+  //   if (storedContext) {
+  //     setContext(JSON.parse(storedContext));
+  //   }
+  // }, []);
 
   useEffect(() => {
     localStorage.setItem("chatMessages", JSON.stringify(messages));
@@ -43,17 +43,27 @@ function ChatBot() {
       setErrorMessage("Please enter your message first");
       return;
     }
-    const response = await axios.post('http://127.0.0.1:5000/chat', { message: input, context });
-    const messagedata = [
-      {
-        sender: "user",
-        content: input,
-      },
-      {
-        sender: "bot",
-        content: response.data.response,
-      },
-    ];
+    const response = await axios.post("http://127.0.0.1:5000/chat", {
+      message: input,
+      context,
+    });
+    let messagedata = {
+      sender: "bot",
+      content: "I am too tired right now, can we talk later?",
+    };
+    if (response.data.response) {
+      messagedata = [
+        {
+          sender: "user",
+          content: input,
+        },
+        {
+          sender: "bot",
+          content: response.data.response,
+        },
+      ];
+    }
+
     setMessages([...messages, ...messagedata]);
     setInput("");
     setErrorMessage("");
@@ -61,14 +71,14 @@ function ChatBot() {
 
   return (
     <div className="chat-container">
-      <h1 className="chat-title">Domain Specific ChatBot</h1>
-      <h2 className="chat-subtitle">Your friendly academic companion</h2>
+      <h1 className="chat-title">Academic ChatBot</h1>
+      <h2 className="chat-subtitle">Your friendly Academic companion</h2>
       <div className="chat-messages">
-        {
-            messages.length>0 &&       <button className="clear-button" onClick={clearChat}>
+        {messages.length > 0 && (
+          <button className="clear-button" onClick={clearChat}>
             Clear Chat
           </button>
-        }
+        )}
         {messages.map((message, index) => (
           <p className={`chat-message ${message.sender}`} key={index}>
             <b>{message.sender}:</b> {message.content}
