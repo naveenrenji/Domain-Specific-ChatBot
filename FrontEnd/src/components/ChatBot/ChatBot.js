@@ -73,12 +73,14 @@ function ChatBot() {
     <div className="chat-container">
       <h1 className="chat-title">Academic ChatBot</h1>
       <h2 className="chat-subtitle">Your friendly Academic companion</h2>
-      <div className="chat-messages">
-        {messages.length > 0 && (
+      <div>
+      {messages.length > 0 && (
           <button className="clear-button" onClick={clearChat}>
             Clear Chat
           </button>
         )}
+      </div>
+      <div className="chat-messages">
         {messages.map((message, index) => (
           <p className={`chat-message ${message.sender}`} key={index}>
             <b>{message.sender}:</b> {message.content}
