@@ -13,17 +13,6 @@ function ChatBot() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  // useEffect(() => {
-  //   const storedMessages = localStorage.getItem("chatMessages");
-  //   const storedContext = localStorage.getItem("chatContext");
-  //   if (storedMessages) {
-  //     setMessages(JSON.parse(storedMessages));
-  //   }
-  //   if (storedContext) {
-  //     setContext(JSON.parse(storedContext));
-  //   }
-  // }, []);
-
   useEffect(() => {
     localStorage.setItem("chatMessages", JSON.stringify(messages));
     localStorage.setItem("chatContext", JSON.stringify(context));
@@ -71,7 +60,7 @@ function ChatBot() {
 
   return (
     <div className="chat-container">
-      <h1 className="chat-title">SSE - GPT</h1>
+      <h1 className="chat-title">Academic Chatbot</h1>
       <h2 className="chat-subtitle">Your friendly Academic companion</h2>
       <div>
       {messages.length > 0 && (
