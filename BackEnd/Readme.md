@@ -16,7 +16,9 @@ To set up and start the backend
 
      pip install flask transformers torch flask_cors
 
-4. Run your Flask app:
+4. Execute fineTune.py
+
+5. Run your Flask app:
 
 Before running your Flask application, you need to set the FLASK_APP environment variable:
 
@@ -28,7 +30,7 @@ Before running your Flask application, you need to set the FLASK_APP environment
 
         export FLASK_APP=app.py
 
-5. Start your Flask application by running:
+6. Start your Flask application by running:
 
         flask run
 
