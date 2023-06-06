@@ -33,16 +33,16 @@ const parts = [
 
     let nextBotMessage = null;
     if (message === "I am not sure...") {
-      nextBotMessage = [{
+      nextBotMessage = {
         sender: "bot",
         content: part.fallback,
-      }];
+      };
       EnquiryPhaseStage = "fallback";
     } else if (message === "I need some motivation") {
-      nextBotMessage = [{
+      nextBotMessage = {
         sender: "bot",
         content: part.motivation,
-      }];
+      };
       EnquiryPhaseStage = "motivation";
     } else {
       // Implement validation for each part here
