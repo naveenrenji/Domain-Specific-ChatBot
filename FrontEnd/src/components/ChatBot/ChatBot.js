@@ -1,12 +1,23 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./ChatBot.css";
-import axios from "axios";
+import { enquiryPhaseFunc } from "./enquiryPhase/Enquiry";
+import { mainDialogue } from "./mainDialoguePhase/mainDialogue";
+
+const botIntro = {
+  sender: "bot",
+  content:
+    "Hello, I'm ANN (short for Artificial Neural Networks). I'm here to assist you in designing an exceptional engineering project. Your insights and details are crucial for me to offer the most helpful guidance. So, thank you in advance for your time and effort in sharing your project's specifics with me. Before we begin, may I ask how you would like to be addressed?",
+};
 
 function ChatBot() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [context, setContext] = useState("");
+  const [partIndex, setPartIndex] = useState(0);
+  const [userInputPhase, setUserInputPhase] = useState("enquiry");
+  const [enquiryPhaseStage, setEnquiryPhaseStage] = useState("prompt");
+
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -19,11 +30,27 @@ function ChatBot() {
     scrollToBottom();
   }, [messages, context]);
 
+  useEffect(() => {
+    const botMessage = {
+      sender: "bot",
+      content:
+        "Hello, I'm ANN (short for Artificial Neural Networks). I'm here to assist you in designing an exceptional engineering project. Your insights and details are crucial for me to offer the most helpful guidance. So, thank you in advance for your time and effort in sharing your project's specifics with me. Before we begin, may I ask how you would like to be addressed?",
+    };
+    setPartIndex(0);
+    setEnquiryPhaseStage("prompt");
+    setUserInputPhase("enquiry");
+    setMessages([botMessage]);
+  }, []);
+
   const clearChat = () => {
     setMessages([]);
     setContext("");
     localStorage.removeItem("chatMessages");
     localStorage.removeItem("chatContext");
+    setMessages([botIntro]);
+    setUserInputPhase("enquiry");
+    setEnquiryPhaseStage("prompt");
+    setPartIndex(0);
   };
 
   const sendMessage = async (e) => {
@@ -32,27 +59,39 @@ function ChatBot() {
       setErrorMessage("Please enter your message first");
       return;
     }
-    const response = await axios.post("http://127.0.0.1:5000/chat", {
-      message: input,
-      context,
-    });
-    let messagedata = {
-      sender: "bot",
-      content: "I am too tired right now, can we talk later?",
-    };
-    if (response.data.response) {
-      messagedata = [
-        {
-          sender: "user",
-          content: input,
-        },
-        {
-          sender: "bot",
-          content: response.data.response,
-        },
-      ];
+    let response;
+    let messagedata = [
+      {
+        sender: "user",
+        content: input,
+      },
+    ];
+    setInput("");
+    if (userInputPhase === "enquiry") {
+      const { responseFromEnquiry, partIndexResult, enquiryPhaseStageResult } =
+        enquiryPhaseFunc(input, partIndex, enquiryPhaseStage);
+      setEnquiryPhaseStage(enquiryPhaseStageResult);
+      setPartIndex(partIndexResult);
+      response = responseFromEnquiry;
+    } else if (userInputPhase === "mainDialogue") {
+      response = await mainDialogue(input);
     }
+    messagedata = [...messagedata, response];
+    setMessages([...messages, ...messagedata]);
+    setInput("");
+    setErrorMessage("");
+  };
 
+  const handleBubbleClick = (message) => {
+    const bubbleMessage = [{
+      sender: "user",
+      content: message,
+    }];
+    const { responseFromEnquiry, partIndexResult, enquiryPhaseStageResult } =
+      enquiryPhaseFunc(message, partIndex, enquiryPhaseStage);
+    setEnquiryPhaseStage(enquiryPhaseStageResult);
+    setPartIndex(partIndexResult);
+    const messagedata = [...bubbleMessage, responseFromEnquiry]
     setMessages([...messages, ...messagedata]);
     setInput("");
     setErrorMessage("");
@@ -63,7 +102,7 @@ function ChatBot() {
       <h1 className="chat-title">Academic Chatbot</h1>
       <h2 className="chat-subtitle">Your friendly Academic companion</h2>
       <div>
-      {messages.length > 0 && (
+        {messages.length > 0 && (
           <button className="clear-button" onClick={clearChat}>
             Clear Chat
           </button>
@@ -77,6 +116,11 @@ function ChatBot() {
         ))}
         <div ref={messagesEndRef} />
       </div>
+      {["I am not sure...", "I need some motivation"].map((text, i) => (
+        <button key={i} onClick={() => handleBubbleClick(text)}>
+          {text}
+        </button>
+      ))}
       <form onSubmit={sendMessage} className="chat-form">
         <input
           className="chat-input"
