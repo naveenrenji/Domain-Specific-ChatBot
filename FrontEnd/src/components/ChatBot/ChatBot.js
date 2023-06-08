@@ -22,6 +22,7 @@ function ChatBot() {
   const [enquiryPhaseStage, setEnquiryPhaseStage] = useState("prompt");
   const [userName, setUserName] = useState("");
   const [enquiryResults, setEnquiryResults] = useState([]);
+  const partsEnquiry = parts;
 
   const messagesEndRef = useRef(null);
 
@@ -91,19 +92,28 @@ function ChatBot() {
       enquiryPhaseStageResult,
     } = enquiryPhaseFunc(input, partIndex, enquiryPhaseStage);
   
+    if(userInputPhase==="answerEnquiry"){
+      const enquiryData = [{
+        title : partsEnquiry[partIndex-1].title,
+        content : input
+      }]
+      setEnquiryResults([...enquiryResults, enquiryData]);
+    }
+
     setEnquiryPhaseStage(enquiryPhaseStageResult);
     setPartIndex(partIndexResult);
   
+
     // Check if the enquiry phase is completed and, if so, switch to mainDialogue phase
     if (enquiryPhaseStageResult === "completed") {
       setUserInputPhase("mainDialogue");
     }
-     istate = userInputPhase;
 
     return responseFromEnquiry;
   };
 
   const handleMainDialoguePhase = async (input) => {
+    console.log(enquiryResults);
     const response = await mainDialogue(input, context); // added context as parameter in mainDialogue function
     return response;
   };
@@ -115,24 +125,14 @@ function ChatBot() {
     if (input.trim().length === 0) {
       return;
     }
-  
     let response;
     const messageData = { sender: "user", content: input };
     setInput("");
-    let istate = userInputPhase;
-
     if (userName === "") {
       handleFirstInput(input);
       return; // After handleFirstInput, we stop execution because sendMessage will be called again
     } else if (userInputPhase === "enquiry" || userInputPhase === "answerEnquiry") {
       response = handleEnquiryPhase(input);
-      if(userInputPhase==="answerEnquiry"){
-        const enquiryData = [{
-          title : parts[partIndex-1].title,
-          content : input
-        }]
-        setEnquiryResults([...enquiryResults,...enquiryData]);
-      }
     } else if (userInputPhase === "mainDialogue") {
       response = await handleMainDialoguePhase(input);
     }

@@ -49,58 +49,52 @@ const enquiryPhaseFunc = (message, partIndex, EnquiryPhaseStage) => {
   const part = parts[partIndex];
   let nextBotMessage = null;
 
-  if (!part) {
-    return;
-  }
- else {
-    if (message === "I'm not sure...") {
+  if (message === "I'm not sure...") {
+    nextBotMessage = {
+      sender: "bot",
+      content: part.fallback,
+    };
+    EnquiryPhaseStage = "fallback";
+  } else if (message === "I need some motivation") {
+    nextBotMessage = {
+      sender: "bot",
+      content: part.motivation,
+    };
+    EnquiryPhaseStage = "motivation";
+  } else {
+    if (EnquiryPhaseStage === "answerEnquiry" && partIndex < parts.length) {
       nextBotMessage = {
         sender: "bot",
-        content: part.fallback,
+        content: parts[partIndex]?.prompt,
       };
-      EnquiryPhaseStage = "fallback";
-    } else if (message === "I need some motivation") {
+      // partIndex = partIndex + 1;
+      EnquiryPhaseStage = "prompt";
+    } else if (partIndex === 0) {
       nextBotMessage = {
         sender: "bot",
-        content: part.motivation,
+        content: parts[partIndex]?.prompt,
       };
-      EnquiryPhaseStage = "motivation";
-    } else {
-      if (EnquiryPhaseStage==="answerEnquiry") {
-        nextBotMessage = {
-          sender: "bot",
-          content: parts[partIndex]?.prompt,
-        };
-        // partIndex = partIndex + 1;
-        EnquiryPhaseStage = "prompt";
-      }
-      else if (partIndex === 0) {
-        nextBotMessage = {
-          sender: "bot",
-          content: parts[partIndex]?.prompt,
-        };
-        EnquiryPhaseStage = "prompt";
-      }
-      // Implement validation for each part here
-      else if (!validateUserInput(message, part)) {
-        nextBotMessage = {
-          sender: "bot",
-          content: "Your input was not valid, please try again.",
-        };
-        EnquiryPhaseStage = "prompt";
-      } 
+      EnquiryPhaseStage = "prompt";
+    }
+    // Implement validation for each part here
+    else if (!validateUserInput(message, part)) {
+      nextBotMessage = {
+        sender: "bot",
+        content: "Your input was not valid, please try again.",
+      };
+      EnquiryPhaseStage = "prompt";
     }
   }
 
   if (partIndex === parts.length) {
-    const finalMessage = [
+    const finalMessage = 
       {
         sender: "bot",
         content:
           "Thank you again for sharing all this valuable information! Let's continue shaping your idea into a successful project!",
-      },
-    ];
-    nextBotMessage = [...nextBotMessage, ...finalMessage];
+      }
+    ;
+    nextBotMessage = finalMessage;
     EnquiryPhaseStage = "completed";
   }
 
