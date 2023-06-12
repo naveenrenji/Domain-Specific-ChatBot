@@ -40,7 +40,7 @@ function ChatBot() {
     const botMessage = {
       sender: "bot",
       content:
-        "Hello, I'm ANN (short for Artificial Neural Networks). I'm here to assist you in designing an exceptional engineering project. Your insights and details are crucial for me to offer the most helpful guidance. So, thank you in advance for your time and effort in sharing your project's specifics with me. Before we begin, may I ask how you would like to be addressed?",
+        "Hello, I'm ANN. I'm here to assist you in designing an exceptional engineering project. Your insights and details are crucial for me to offer the most helpful guidance. So, thank you in advance for your time and effort in sharing your project's specifics with me. Before we begin, may I ask how you would like to be addressed?",
     };
     setPartIndex(0);
     setEnquiryPhaseStage("prompt");
