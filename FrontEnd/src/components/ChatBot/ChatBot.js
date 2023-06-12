@@ -2,27 +2,21 @@ import React, { useState, useEffect, useRef } from "react";
 import "./ChatBot.css";
 import { enquiryPhaseFunc } from "./enquiryPhase/Enquiry";
 import { mainDialogue } from "./mainDialoguePhase/mainDialogue";
-import { parts } from "./enquiryPhase/Enquiry";
 
 const botIntro = {
   sender: "bot",
   content:
-    "Hello, I'm ANN (short for Artificial Neural Networks). I'm here to assist you in designing an exceptional engineering project. Your insights and details are crucial for me to offer the most helpful guidance. So, thank you in advance for your time and effort in sharing your project's specifics with me. Before we begin, may I ask how you would like to be addressed?",
+    "Hello, I'm ANN. I'm here to assist you in designing an exceptional engineering project. Whether you're looking to explore a new idea or seeking guidance to improve an existing project, I'm here to help. Your insights and details are crucial for me to offer the most helpful guidance, so thank you in advance for your time and effort in sharing your project's specifics with me. To get started, I'd like to provide some context on generating a new project idea. By understanding the context of your project, I can better assist you in formulating an innovative and impactful engineering design. So, let's embark on this journey together and create something extraordinary!",
 };
 
-const optionButtons = ["Answer", "I'm not sure...", "I need some motivation"];
-
 function ChatBot() {
-  const [messages, setMessages] = useState([botIntro]);
+  const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [context, setContext] = useState("");
   const [partIndex, setPartIndex] = useState(0);
-  const [userInputPhase, setUserInputPhase] = useState("answerEnquiry");
+  const [userInputPhase, setUserInputPhase] = useState("enquiry");
   const [enquiryPhaseStage, setEnquiryPhaseStage] = useState("prompt");
-  const [userName, setUserName] = useState("");
-  const [enquiryResults, setEnquiryResults] = useState([]);
-  const partsEnquiry = parts;
 
   const messagesEndRef = useRef(null);
 
@@ -40,11 +34,11 @@ function ChatBot() {
     const botMessage = {
       sender: "bot",
       content:
-        "Hello, I'm ANN. I'm here to assist you in designing an exceptional engineering project. Your insights and details are crucial for me to offer the most helpful guidance. So, thank you in advance for your time and effort in sharing your project's specifics with me. Before we begin, may I ask how you would like to be addressed?",
+        "Hello, I'm ANN. I'm here to assist you in designing an exceptional engineering project. Whether you're looking to explore a new idea or seeking guidance to improve an existing project, I'm here to help. Your insights and details are crucial for me to offer the most helpful guidance, so thank you in advance for your time and effort in sharing your project's specifics with me. To get started, I'd like to provide some context on generating a new project idea. By understanding the context of your project, I can better assist you in formulating an innovative and impactful engineering design. So, let's embark on this journey together and create something extraordinary!",
     };
     setPartIndex(0);
     setEnquiryPhaseStage("prompt");
-    setUserInputPhase("answerEnquiry");
+    setUserInputPhase("enquiry");
     setMessages([botMessage]);
   }, []);
 
@@ -59,114 +53,50 @@ function ChatBot() {
     setPartIndex(0);
   };
 
-  const handleFirstInput = (input) => {
-    const messageData = [
-      { sender: "user", content: input },
-      {
-        sender: "bot",
-        content: "Hi " + input + ". It is nice to talk to you, I would like to ask you a few questions about the engineering design project you have in mind."
-      }
-    ];
-    setUserName(input);
-    setMessages([...messages, ...messageData]);
-
-    const {
-      responseFromEnquiry,
-      partIndexResult,
-      enquiryPhaseStageResult,
-    } = enquiryPhaseFunc("input", partIndex, enquiryPhaseStage);
-
-    const firstEnquiry = responseFromEnquiry; // this should return the first enquiry
-    setMessages((prevMessages) => [...prevMessages, firstEnquiry]);
-    setUserInputPhase("enquiry");
-    let istate = userInputPhase;
-};
-
-
-  const handleEnquiryPhase = (input) => {
-    let istate = userInputPhase;
-    setUserInputPhase("enquiry");
-    const {
-      responseFromEnquiry,
-      partIndexResult,
-      enquiryPhaseStageResult,
-    } = enquiryPhaseFunc(input, partIndex, enquiryPhaseStage);
-  
-    if(userInputPhase==="answerEnquiry"){
-      const enquiryData = [{
-        title : partsEnquiry[partIndex-1].title,
-        content : input
-      }]
-      setEnquiryResults([...enquiryResults, enquiryData]);
-    }
-
-    setEnquiryPhaseStage(enquiryPhaseStageResult);
-    setPartIndex(partIndexResult);
-  
-
-    // Check if the enquiry phase is completed and, if so, switch to mainDialogue phase
-    if (enquiryPhaseStageResult === "completed") {
-      setUserInputPhase("mainDialogue");
-    }
-
-    return responseFromEnquiry;
-  };
-
-  const handleMainDialoguePhase = async (input) => {
-    console.log(enquiryResults);
-    const response = await mainDialogue(input, context); // added context as parameter in mainDialogue function
-    return response;
-  };
-  
-
-
   const sendMessage = async (e) => {
     e.preventDefault();
     if (input.trim().length === 0) {
+      setErrorMessage("Please enter your message first");
       return;
     }
     let response;
-    const messageData = { sender: "user", content: input };
-    setInput("");
-    if (userName === "") {
-      handleFirstInput(input);
-      return; // After handleFirstInput, we stop execution because sendMessage will be called again
-    } else if (userInputPhase === "enquiry" || userInputPhase === "answerEnquiry") {
-      response = handleEnquiryPhase(input);
-    } else if (userInputPhase === "mainDialogue") {
-      response = await handleMainDialoguePhase(input);
-    }
-  
-    setMessages([...messages, messageData, response]);
-  };
-  
-
-  const handleBubbleClick = (message) => {
-    const bubbleMessage = [
+    let messagedata = [
       {
         sender: "user",
-        content: message,
+        content: input,
       },
     ];
-    const { responseFromEnquiry, partIndexResult, enquiryPhaseStageResult } =
+    setInput("");
+    if (userInputPhase === "enquiry") {
+      const { responseFromEnquiry, partIndexResult, enquiryPhaseStageResult } =
+        enquiryPhaseFunc(input, partIndex, enquiryPhaseStage);
+      setEnquiryPhaseStage(enquiryPhaseStageResult);
+      setPartIndex(partIndexResult);
+      response = responseFromEnquiry;
+    } else if (userInputPhase === "mainDialogue") {
+      response = await mainDialogue(input);
+    }
+    messagedata = [...messagedata, response];
+    setMessages([...messages, ...messagedata]);
+    setInput("");
+    setErrorMessage("");
+  };
+debugger;
+  const handleBubbleClick = (message) => {
+    const bubbleMessage = [{
+      sender: "user",
+      content: message,
+    }];
+   const { responseFromEnquiry, partIndexResult, enquiryPhaseStageResult } =
       enquiryPhaseFunc(message, partIndex, enquiryPhaseStage);
     setEnquiryPhaseStage(enquiryPhaseStageResult);
     setPartIndex(partIndexResult);
-    const messagedata = [...bubbleMessage, responseFromEnquiry];
+    const messagedata = [...bubbleMessage, responseFromEnquiry]
     setMessages([...messages, ...messagedata]);
     setInput("");
     setErrorMessage("");
   };
 
-  const handleOptionButtonClick = (option) => {
-    if (option === "Answer") {
-      setPartIndex(partIndex+1);
-      setUserInputPhase("answerEnquiry");
-      setEnquiryPhaseStage("answerEnquiry");
-    } else {
-      handleBubbleClick(option);
-    }
-  };
 
   return (
     <div className="chat-container">
@@ -187,34 +117,22 @@ function ChatBot() {
         ))}
         <div ref={messagesEndRef} />
       </div>
-      {userInputPhase === "enquiry" && enquiryPhaseStage !== "completed" && (
-        <div className="options-container">
-          {optionButtons.map((option, i) => (
-            <button
-              key={i}
-              className={`option-button option-button-${i}`}
-              onClick={() => handleOptionButtonClick(option)}
-            >
-              {option}
-            </button>
-          ))}
-        </div>
-      )}
-      {(userInputPhase === "mainDialogue" ||
-        userInputPhase === "answerEnquiry") && (
-        <form onSubmit={sendMessage} className="chat-form">
-          <input
-            className="chat-input"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Enter your message"
-          />
-          <button className="chat-button" type="submit">
-            Submit
-          </button>
-        </form>
-      )}
-
+      {["I am not sure...", "I need some motivation"].map((text, i) => (
+        <button key={i} onClick={() => handleBubbleClick(text)}>
+          {text}
+        </button>
+      ))}
+      <form onSubmit={sendMessage} className="chat-form">
+        <input
+          className="chat-input"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="Enter your message"
+        />
+        <button className="chat-button" type="submit">
+          Submit
+        </button>
+      </form>
       {errorMessage && <p className="error-message">{errorMessage}</p>}
     </div>
   );
