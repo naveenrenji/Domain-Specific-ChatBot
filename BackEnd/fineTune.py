@@ -24,7 +24,7 @@ def setup_training(tokenizer, dataset, data_collator):
     training_args = TrainingArguments(
         output_dir="./results",
         overwrite_output_dir=True,
-        num_train_epochs=400,
+        num_train_epochs=100,
         per_device_train_batch_size=4,  # increased batch size
         save_steps=10_000,
         save_total_limit=2,

@@ -14,7 +14,7 @@ To set up and start the backend
 
 3. Install Flask and Transformers libraries in your virtual environment: 
 
-     pip install flask transformers torch flask_cors
+     pip install flask transformers==4.29.2 torch flask_cors
 
 4. Execute fineTune.py
 

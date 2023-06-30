@@ -1,6 +1,3 @@
-import os
-os.environ['KMP_DUPLICATE_LIB_OK']='True'
-
 import pandas as pd
 from datasets import Dataset
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, TrainingArguments, Trainer
@@ -16,7 +13,7 @@ dataset = dataset.train_test_split(test_size=0.2)
 tokenizer = AutoTokenizer.from_pretrained('distilbert-base-uncased')
 
 def preprocess_function(examples):
-    return tokenizer(examples["ReprDescr"], truncation=True)
+    return tokenizer(examples["description"], truncation=True, padding='max_length', max_length=512)
 
 tokenized_dataset = dataset.map(preprocess_function, batched=True)
 
@@ -40,7 +37,7 @@ def compute_metrics(eval_pred):
     predictions = np.argmax(predictions, axis=1)
     return {"accuracy": (predictions == labels).astype(np.float32).mean().item()}
 
-# Train the model
+# Initialize the Trainer
 trainer = Trainer(
     model=model,
     args=training_args,
@@ -49,10 +46,8 @@ trainer = Trainer(
     compute_metrics=compute_metrics,
 )
 
+# Train the model
 trainer.train()
 
 # Evaluate the model
 trainer.evaluate()
-
-# Save the model
-trainer.save_model()
