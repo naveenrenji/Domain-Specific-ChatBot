@@ -1,11 +1,3 @@
-The "Room Theory": a computational model to
-account subjectivity into Natural Language Processing
-Carlo Lipizzi1
-, Dario Borrelli1
-, Fernanda de Oliveira Capela1
-1 School of Systems & Enterprises, Stevens Institute of Technology, Hoboken, New Jersey, USA
-Contacts: clipizzi@stevens.edu, dborrell@stevens.edu, fcapela@stevens.edu
-Abstract
 This work introduces a novel method to consider subjectivity and general context dependency in text analysis. The proposed
 method takes into account subjectivity using a computational version of the Framework Theory by Marvin Minsky (1974)
 leveraging on text vectorization - such as Word2Vec by Mikolov et al. (2013). The embeddings created by the vectorization
