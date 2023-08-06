@@ -27,8 +27,7 @@ def classify_text(text):
     with torch.no_grad():
         outputs = model(input_ids)
     probs = torch.nn.functional.softmax(outputs.logits, dim=-1)
-    return probs[0][1].item()
-
+    return probs[0][1].item
 # Prompting user input
 while True:
     user_input = input("Please enter a description (or 'stop' to quit): ")

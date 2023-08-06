@@ -10,7 +10,14 @@ from tqdm import tqdm
 
 # Load data
 df = pd.read_csv('noveltyDataChatGPT.csv')
+df['description'] = df['description'].fillna('missing').apply(lambda x: x.lower())
+
 df['description'] = df['description'].apply(lambda x: x.lower())
+
+novelty_counts = df['novelty'].value_counts()
+print("Number of novel descriptions:", novelty_counts[1])
+print("Number of non-novel descriptions:", novelty_counts[0])
+
 
 # Tokenize data
 tokenizer = AutoTokenizer.from_pretrained('bert-base-uncased')
@@ -56,7 +63,7 @@ optimizer = AdamW(model.parameters(), lr=1e-5)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 model = model.to(device)
 
-for epoch in range(7):
+for epoch in range(1):
     model.train()
     total_loss = 0
     progress = tqdm(total=len(train_dataloader), desc='Epoch {:03d}'.format(epoch), ncols=80, leave=False)
