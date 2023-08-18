@@ -82,4 +82,8 @@ def predict_washing_machine(description):
 
 # Example usage
 description = "have a washing machine that can detect if clothes have stains."
-print(f'Prediction for description: {predict_washing_machine(description)}')
+print(f'Prediction for description:  {description} = {predict_washing_machine(description)}')
+
+
+description = "have a juice blender that runs on solar energy."
+print(f'Prediction for description: {description} = {predict_washing_machine(description)}')
