@@ -12,7 +12,7 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 model = model.to(device)
 
 # Function to classify a text
-def classify_text(text):
+def classify_novelty(text):
     model.eval()
     inputs = tokenizer.encode_plus(
         text.lower(),
