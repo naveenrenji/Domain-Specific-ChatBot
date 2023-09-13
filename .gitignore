@@ -4,8 +4,7 @@ __pycache__/
 fine_tuned_model
 results
 cached_*
-new_env/
-flask_session
-Novelty/
-Validation/
-Feasibility/
+newenv/
+flask_session/
+package-lock.json
+Novelty/*.csv
