@@ -1,3 +1,4 @@
+package-lock.json
 node_modules/
 venv/
 __pycache__/
@@ -6,5 +7,6 @@ results
 cached_*
 newenv/
 flask_session/
-package-lock.json
-Novelty/*.csv
+Novelty/
+Feasibility/
+Validation/

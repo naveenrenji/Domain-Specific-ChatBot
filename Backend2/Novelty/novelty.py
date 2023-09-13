@@ -2,10 +2,11 @@
 
 import torch
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
+from os.path import dirname
 
 # Load the fine-tuned model and tokenizer
-tokenizer = AutoTokenizer.from_pretrained("./novelty_fine_tuned_model")
-model = AutoModelForSequenceClassification.from_pretrained("./novelty_fine_tuned_model")
+tokenizer = AutoTokenizer.from_pretrained(f'{dirname(__file__)}/nftm/')
+model = AutoModelForSequenceClassification.from_pretrained(f'{dirname(__file__)}/nftm/')
 
 # Device
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -27,7 +28,8 @@ def classify_novelty(text):
     with torch.no_grad():
         outputs = model(input_ids)
     probs = torch.nn.functional.softmax(outputs.logits, dim=-1)
-    return probs[0][1].item
+    # print(probs[0][1].item())
+    return probs[0][1].item()
 
 
 # # Prompting user input

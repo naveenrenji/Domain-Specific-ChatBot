@@ -16,5 +16,5 @@ def get_novelty(message):
     return response
 
 def get_feasibility(message):
-    response = predict_validation(message)
+    response = classify_feasibility(message)
     return response
