@@ -39,7 +39,7 @@ model.to(device)
 optimizer = AdamW(model.parameters(), lr=1e-5)
 
 # Training loop
-for epoch in range(3):
+for epoch in range(10):
     for batch in train_loader:
         optimizer.zero_grad()
         input_ids, attention_mask, labels = batch

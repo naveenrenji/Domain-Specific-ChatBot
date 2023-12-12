@@ -1,0 +1,134 @@
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+.App-logo {
+  height: 80px;
+}
+
+.home-intro {
+  text-align: left;
+  margin: 25px;
+  font-size: 16px;
+}
+
+input {
+  border: 1px solid #1e8678;
+}
+.show-body {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
+.App-header {
+  background-color: #4f4f4f;
+  height: auto;
+  padding: 20px;
+  color: #222;
+}
+
+.navheader {
+  align-content: end;
+}
+
+.App-title {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: white;
+}
+
+cite {
+  font-weight: bold;
+}
+table {
+  align-content: center;
+  margin: auto;
+}
+td {
+  padding: 10px;
+}
+
+.App-intro {
+  font-size: large;
+}
+.cap-first-letter:first-letter {
+  text-transform: capitalize;
+}
+.col-sm-6,
+col-md-4 {
+  border: 1px;
+}
+
+.hometext {
+  max-width: 60%;
+}
+.showlink {
+  padding: 0.4rem 0.8rem;
+  background-color: white;
+  border-radius: 3px;
+  color: #01332d;
+  text-decoration: none !important;
+  margin: 5px;
+}
+
+.button-paginate {
+  padding: 0.4rem 0.8rem;
+  background-color: rgb(20, 141, 248);
+  border-radius: 3px;
+  color: #ffffff;
+  text-decoration: none !important;
+  margin: 5px;
+}
+
+.button-paginate[disabled] {
+  background-color: rgb(27, 28, 28);
+}
+
+.showlink:hover {
+  background-color: transparent;
+  color: white;
+  border: 2px solid white;
+}
+
+li {
+  padding: 20px;
+}
+
+p {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+div {
+  text-align: center;
+}
+
+a {
+  color: #02453d;
+  text-decoration: none !important;
+}
+
+ul a:hover {
+  background-color: transparent;
+  color: blue;
+}
+
+ul {
+  list-style: none;
+}
+
+.title {
+  font-weight: bold;
+  color: #1e8678;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  input {
+    font-size: 16px;
+  }
+}

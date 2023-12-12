@@ -1,0 +1,12 @@
+.header-brand {
+  text-align: left;
+}
+
+.container {
+  padding: 10px;
+  width: 100%;
+}
+
+.navbar-header {
+  background-color: #fdd26d !important; /* override background image gradient w/ flat color */
+}

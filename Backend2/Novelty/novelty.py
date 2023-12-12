@@ -5,8 +5,8 @@ from transformers import AutoTokenizer, AutoModelForSequenceClassification
 from os.path import dirname
 
 # Load the fine-tuned model and tokenizer
-tokenizer = AutoTokenizer.from_pretrained(f'{dirname(__file__)}/nftm/')
-model = AutoModelForSequenceClassification.from_pretrained(f'{dirname(__file__)}/nftm/')
+tokenizer = AutoTokenizer.from_pretrained(f'{dirname(__file__)}/novelty_fine_tuned_model/')
+model = AutoModelForSequenceClassification.from_pretrained(f'{dirname(__file__)}/novelty_fine_tuned_model/')
 
 # Device
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')

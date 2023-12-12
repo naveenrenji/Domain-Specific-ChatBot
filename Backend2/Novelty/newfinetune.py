@@ -76,6 +76,11 @@ training_args = TrainingArguments(
 # Initialize the model
 model = RobertaForSequenceClassification.from_pretrained('roberta-base')
 
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+print(torch.cuda.is_available())
+model = model.to(device)
+
+
 def compute_metrics(p):
     return {"accuracy": accuracy_score(p.label_ids, p.predictions.argmax(-1))}
 

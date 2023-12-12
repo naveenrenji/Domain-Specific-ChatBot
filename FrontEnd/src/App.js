@@ -2,26 +2,29 @@ import "./App.css";
 import ChatBot from "./components/ChatBot/ChatBot";
 import LoginPage from "./components/LoginPage";
 import RegisterPage from "./components/RegisterPage";
+import Home from "./components/Home/Home";
+import Header from "./components/Header/Header";
 import UserProvider from "./context/userContext";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Routes,
+  Navigate,
+} from "react-router-dom";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <Router>
-          <UserProvider>
-            <Routes>
-              <Route path="/" element={<ChatBot />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/register" element={<RegisterPage />} />
-              {/* <Route path="/forget-password" element={<ForgetPasswordPage />} /> */}
-              {/* <Route path="/home" element={<HomePage />} /> */}
-            </Routes>
-          </UserProvider>
-        </Router>
-      </header>
-    </div>
+    <Router>
+      <div>
+        <Routes>
+          <Route path="/" element={<ChatBot />} />
+          <Route path="/chatbot" element={<ChatBot />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 

@@ -6,6 +6,9 @@ import { mainDialogue } from "./mainDialoguePhase/mainDialogue";
 import axios from "axios";
 import { UserContext } from "../../context/userContext";
 
+import Button from "react-bootstrap/Button";
+import ListGroup from "react-bootstrap/ListGroup";
+
 const botIntro = {
   sender: "bot",
   content:
@@ -30,11 +33,14 @@ function ChatBot() {
 
   const messagesEndRef = useRef(null);
 
-  const { user, setUser, token, setToken, authenticated, setAuthenticated } =
-    useContext(UserContext);
+  // const { user, setUser, token, setToken, authenticated, setAuthenticated } =
+  //   useContext(UserContext);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    messagesEndRef.current?.scrollIntoView({
+      block: "end",
+      behavior: "smooth",
+    });
   };
 
   useEffect(() => {
@@ -42,6 +48,10 @@ function ChatBot() {
     localStorage.setItem("chatContext", JSON.stringify(context));
     scrollToBottom();
   }, [messages, context]);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   useEffect(() => {
     const botMessage = {
@@ -86,6 +96,7 @@ function ChatBot() {
       },
     ];
     setMessages([...messages, ...messagedata]);
+
     try {
       let { data } = await axios.post(
         `http://localhost:5000/chat`,
@@ -164,12 +175,66 @@ function ChatBot() {
   };
 
   return (
-    <>
+    <div className="chatbot">
       {/* {!authenticated ? <Navigate to="/login" /> : null} */}
+      <div className="sidebar">
+        <div className="sidebar-heading">
+          <h1>ANN</h1>
+          <h4>Your engineering design chatbot</h4>
+        </div>
+        <hr></hr>
+        <div className="description-div">
+          <p className="description">
+            This research introduces an AI-driven chatbot designed to evaluate
+            engineering design descriptions based on novelty, feasibility, and
+            validity, addressing the challenges of efficient and accurate
+            assessment. Leveraging fine-tuned BERT base uncased models, the
+            chatbot assesses user inputs through a three-step process, achieving
+            accuracies of 80-85%. The system's architecture and integration of
+            AI models streamline evaluation, offering a rapid alternative to
+            traditional human-based methods. This research introduces an
+            AI-driven chatbot designed to evaluate engineering design
+            descriptions based on novelty, feasibility, and validity, addressing
+            the challenges of efficient and accurate assessment. Leveraging
+            fine-tuned BERT base uncased models, the chatbot assesses user
+            inputs through a three-step process, achieving accuracies of 80-85%.
+            The system's architecture and integration of AI models streamline
+            evaluation, offering a rapid alternative to traditional human-based
+            methods. This research introduces an AI-driven chatbot designed to
+            evaluate engineering design descriptions based on novelty,
+            feasibility, and validity, addressing the challenges of efficient
+            and accurate assessment. Leveraging fine-tuned BERT base uncased
+            models, the chatbot assesses user inputs through a three-step
+            process, achieving accuracies of 80-85%. The system's architecture
+            and integration of AI models streamline evaluation, offering a rapid
+            alternative to traditional human-based methods. This research
+            introduces an AI-driven chatbot designed to evaluate engineering
+            design descriptions based on novelty, feasibility, and validity,
+            addressing the challenges of efficient and accurate assessment.
+            Leveraging fine-tuned BERT base uncased models, the chatbot assesses
+            user inputs through a three-step process, achieving accuracies of
+            80-85%. The system's architecture and integration of AI models
+            streamline evaluation, offering a rapid alternative to traditional
+            human-based methods.
+          </p>
+        </div>
+        <hr></hr>
+
+        <div className="bottomBar">
+          <ListGroup horizontal>
+            <ListGroup.Item>Sagar Mathada</ListGroup.Item>
+            <ListGroup.Item>
+              <Button variant="primary">Logout</Button>{" "}
+            </ListGroup.Item>
+          </ListGroup>
+        </div>
+      </div>
       <div className="chat-container">
-        <h1 className="chat-title">Academic Chatbot</h1>
-        <h2 className="chat-subtitle">Your friendly Academic companion</h2>
-        <div>
+        {/* <div className="title-container">
+          <h1 className="chat-title">Academic Chatbot</h1>
+          <h2 className="chat-subtitle">Your friendly Academic companion</h2>
+        </div> */}
+        <div style={{ textAlign: "left" }}>
           {messages.length > 0 && (
             <button className="clear-button" onClick={clearChat}>
               Clear Chat
@@ -178,19 +243,21 @@ function ChatBot() {
         </div>
         <div className="chat-messages">
           {messages.map((message, index) => (
-            <p className={`chat-message ${message.sender}`} key={index}>
-              <b>{message.sender}:</b> {message.content}
-            </p>
+            <div className="chat-message-div">
+              <p className={`chat-message ${message.sender}`} key={index}>
+                {message.content}
+              </p>
+            </div>
           ))}
           <div ref={messagesEndRef} />
         </div>
-        {["I am not sure...", "I need some motivation"].map((text, i) => (
+        {/* {["I am not sure...", "I need some motivation"].map((text, i) => (
           <button key={i} onClick={() => handleBubbleClick(text)}>
             {text}
           </button>
-        ))}
+        ))} */}
         <form onSubmit={sendMessage} className="chat-form">
-          <input
+          <textarea
             className="chat-input"
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -202,7 +269,7 @@ function ChatBot() {
         </form>
         {errorMessage && <p className="error-message">{errorMessage}</p>}
       </div>
-    </>
+    </div>
   );
 }
 

@@ -6,8 +6,9 @@ from transformers import AutoTokenizer, AutoModelForSequenceClassification, Adam
 from sklearn.metrics import classification_report
 from sklearn.metrics import accuracy_score
 from tqdm import tqdm
- 
 
+
+print(torch.version.cuda)
 
 # Load data
 df = pd.read_csv('noveltyDataChatGPT.csv')
@@ -62,9 +63,10 @@ optimizer = AdamW(model.parameters(), lr=1e-5)
 
 # Training loop
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+print(torch.cuda.is_available())
 model = model.to(device)
 
-for epoch in range(3):
+for epoch in range(10):
     model.train()
     total_loss = 0
     progress = tqdm(total=len(train_dataloader), desc='Epoch {:03d}'.format(epoch), ncols=80, leave=False)
@@ -102,8 +104,8 @@ for epoch in range(3):
     print("Accuracy:", accuracy)
     print(classification_report(true_labels, predictions))
 
-    # Check if the accuracy is greater than 83% and save the model if so
-    if accuracy > 0.82:
+    # Check if the accuracy is greater than 90% and save the model if so
+    if accuracy > 0.90:
         print("Achieved desired accuracy. Saving and stopping training.")
         model.save_pretrained("./novelty_fine_tuned_model")
         tokenizer.save_pretrained("./novelty_fine_tuned_model")
