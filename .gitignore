@@ -7,6 +7,11 @@ results
 cached_*
 newenv/
 flask_session/
-Novelty/
-Feasibility/
-Validation/
+/BackEnd/model
+/BackEnd/Feasibility/feasibility_fine_tuned_model
+Backend2/.DS_Store
+BackEnd/Restart
+BackEnd/.DS_Store
+Experiment 1 Data /.DS_Store
+BackEnd/.DS_Store
+.DS_Store
