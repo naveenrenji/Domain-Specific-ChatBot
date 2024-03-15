@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, session
-from chatbot import get_validation, get_feasibility, get_novelty
+from Phase2.score2 import get_validation, get_feasibility, get_novelty
 from flask_cors import CORS
 
 import jwt

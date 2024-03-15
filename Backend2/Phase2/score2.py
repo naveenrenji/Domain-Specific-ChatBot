@@ -24,8 +24,8 @@ def check_scores(description):
     feasibility=get_feasibility(description)
     return ("valid = " + str(valid) + " | Novelty Score = " + str(novelty) + " | Feasibility Score = " +  str(feasibility))
 
-description = "A washing machine that is engineered to reuse water used my collecting it and filtering the water to remove impurtities and bacteria using UV and charcoal filters"
-print(check_scores(description))
+# description = "A washing machine that is engineered to reuse water used my collecting it and filtering the water to remove impurtities and bacteria using UV and charcoal filters"
+# print(check_scores(description))
 
-description = "A washing machine that uses nuclear power to run"
-print(check_scores(description))
+# description = "A washing machine that uses nuclear power to run"
+# print(check_scores(description))
