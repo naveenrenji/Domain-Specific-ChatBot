@@ -1,7 +1,7 @@
 import openai
 import re
 
-openai.api_key = "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"
+openai.api_key = "apikey"
 conversation_history = []
 
 def validity_score(description):
@@ -17,7 +17,7 @@ def validity_score(description):
 
     system_message = {
         "role": "system",
-        "content": "You are a engineering design expert who will score the provided washing machine desgin description with a score ranging for 0 ( does not describe an engineering design description for a washing machine ) and 1 ( a washing machine engineering design ). You will only respond with the number 0 or 1 and nothing else at all."
+        "content": "You are an engineering design expert tasked with evaluating a provided description related to a washing machine. Your role is to determine if the description focuses on a part, feature, or function that is directly related to the washing machine's core operations, such as washing, rinsing, spinning, drying clothes, energy, smartness, features or user interaction.  If the description pertains to these aspects, it is considered to be describing the engineering design of a washing machine, Even if it they are far fetched, as long as it is talking about a washing machine, it is valid. Your response should be a numerical score: use 1 to indicate the description is relevant to the engineering design of a washing machine, and 0 if it is not. Please provide only the number as your response, with no additional text."
     }
     
     response = openai.ChatCompletion.create(

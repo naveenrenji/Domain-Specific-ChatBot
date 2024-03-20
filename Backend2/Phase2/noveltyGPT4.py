@@ -1,7 +1,7 @@
 import openai
 import re
 
-openai.api_key = "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"
+openai.api_key = "apikey"
 conversation_history = []
 
 def novelty_score(description):
@@ -17,7 +17,20 @@ def novelty_score(description):
 
     system_message = {
         "role": "system",
-        "content": "You are a engineering design expert who will score the provided washing machine desgin description with a score ranging for 1 ( not at all novel engineering design description for a washing machine ) to 5 ( a completely novel idea for a washing machine engineering design). Analyse based on engineering novelty on washing machines. You will only respond with a number between 1 to 5 and nothing else at all."
+        "content": """You are an engineering design expert tasked with evaluating a provided washing machine design description, scoring its novelty on a scale from 1 (not at all novel) to 5 (highly novel). Assess the novelty based on the following criteria:
+
+Uniqueness: If the design presents an idea that is not commonly implemented or discussed in current washing machines, it is considered novel.
+
+Innovation: If the design introduces a fundamental change in how a washing machine operates, cleans, or interacts with users, it is deemed novel.
+
+Technological Advances: If the design involves the introduction of new technology or an innovative application of existing technology in a manner not previously seen in washing machines, it is considered novel.
+
+User Experience: If the design offers a significantly new and different user experience compared to existing washing machines, it can be viewed as novel.
+
+Environmental Impact: If the design proposes a new method for saving energy or reducing waste, it qualifies as novel.
+
+Your response should be a single number between 1 and 5, reflecting your assessment of the design's novelty based on these criteria. Please provide only this number as your response, with no additional text.
+"""
     }
     
     response = openai.ChatCompletion.create(

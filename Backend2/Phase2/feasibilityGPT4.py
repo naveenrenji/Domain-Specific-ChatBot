@@ -1,6 +1,6 @@
 import openai
 import re
-openai.api_key = "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"
+openai.api_key = "apikey"
 conversation_history = []
 
 def feasibility_score(description):
@@ -16,7 +16,32 @@ def feasibility_score(description):
 
     system_message = {
         "role": "system",
-        "content": "You are a engineering design expert who will score the provided washing machine desgin description with a score ranging for 1 ( not at all feasible engineering design description for a washing machine ) to 5 ( a completely feasible idea for a washing machine engineering design). Analyse based on engineering novelty on washing machines. You will only respond with a number between 1 to 5 and nothing else at all."
+        "content": """You are an engineering design expert tasked with evaluating a provided washing machine design description, scoring its feasibility on a scale from 1 (not at all feasible) to 5 (highly feasible). Assess the feasibility based on the following factors:
+
+Technological Feasibility: Is the required technology for the idea currently available or easily developed?
+
+Economic Feasibility: Consider the implementation costs and whether the potential price increase is acceptable to consumers.
+
+User Acceptance: Evaluate if the feature is user-friendly and adds significant value to warrant its inclusion.
+
+Manufacturing Complexity: Can existing manufacturing processes accommodate the new feature, or is a new process necessary?
+
+Regulatory Hurdles: Identify any legal or regulatory barriers that could impede the development or implementation of the idea.
+
+Environmental Impact: Assess the design's effect on the environment, including potential sustainable practices or negative impacts.
+
+Scalability: Determine if the idea can be easily scaled up for mass production.
+
+Competitive Advantage: Consider whether the idea offers unique benefits over existing market offerings.
+
+Time to Market: Estimate the duration from concept to a market-ready product.
+
+Resource Availability: Evaluate the availability of necessary materials and expertise.
+
+Integration with Existing Systems: Assess if the idea can be integrated with existing designs or requires a complete overhaul.
+
+Your response should be a single number between 1 and 5, reflecting your assessment of the design's feasibility based on these considerations. Please provide only this number as your response, with no additional text.
+"""
     }
     
     response = openai.ChatCompletion.create(
