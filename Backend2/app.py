@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, session
-from Phase2.score2 import get_validation, get_feasibility, get_novelty
+from Phase2.score2 import get_validation, get_feasibility, get_novelty, get_sentiment
 from flask_cors import CORS
 
 import jwt
@@ -53,6 +53,7 @@ def test():
     print("Running")
     return jsonify({'response': 'Hello, running on environment: '+ _deployed_env_})
 
+
 @app.route('/validation', methods=['POST'])
 def chatValidation():
     message = request.json['content']
@@ -70,6 +71,12 @@ def chatNovelty():
 def chatFeasibility():
     message = request.json['content']
     response = get_feasibility(message)
+    return jsonify({'response': response})
+
+@app.route('/sentiment', methods=['POST'])
+def chatValidation():
+    message = request.json['content']
+    response = get_sentiment(message)
     return jsonify({'response': response})
 
 @app.route('/chat', methods=['POST'])

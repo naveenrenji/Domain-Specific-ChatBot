@@ -1,6 +1,8 @@
 from feasibilityGPT4 import feasibility_score
 from noveltyGPT4 import novelty_score
 from validityGPT4 import validity_score
+from ..Sentiment.sentiment import classify_sentiment
+
 
 def get_validation(description):
     score = validity_score(description)
@@ -17,6 +19,10 @@ def get_novelty(description):
 def get_feasibility(description):
     score = feasibility_score(description)
     return score 
+
+def get_sentiment(description):
+    score = classify_sentiment(description)
+    return score
 
 def check_scores(description):
     valid=get_validation(description)

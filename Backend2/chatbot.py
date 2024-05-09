@@ -2,6 +2,7 @@
 from Validation.validation import predict_validation
 from Novelty.novelty import classify_novelty
 from Feasibility.feasibility import classify_feasibility
+from Sentiment.sentiment import classify_sentiment
 
 # def get_bot_response(message, context):
 #     response = generate_response(message, context)
@@ -17,4 +18,8 @@ def get_novelty(message):
 
 def get_feasibility(message):
     response = classify_feasibility(message)
+    return response
+
+def get_sentiment(message):
+    response = classify_sentiment(message)
     return response
